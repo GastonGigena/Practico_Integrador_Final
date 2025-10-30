@@ -1,15 +1,10 @@
-# Simulador Ventas Docker (v2)
+# Sistema Mr Frio
 
-## Levantar
-1. Descargar y descomprimir.
-2. Desde la carpeta del proyecto:
-   docker-compose up --build
-3. Abrir: http://localhost:8000
+Sistema de gestión de ventas, clientes y stock desarrollado con Django.
+Incluye panel de administración, control de roles, dashboard y autenticación.
 
-Superusuario por defecto:
-  user: admin
-  pass: admin123
-
-## Notas
-- Entrada automática crea superuser y grupos al arrancar (entrypoint.sh).
-- Para crear superuser con otros datos, exportar variables DJANGO_SUPERUSER_* en environment.
+## Características principales
+- Control de usuarios (Administrador, Ventas, Stock)
+- Dashboard con estadísticas de ventas
+- Carga de productos y clientes
+- Exportación y generación de PDF
