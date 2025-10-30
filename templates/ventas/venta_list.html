@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Ventas</h2>
+<a class="btn btn-primary mb-2" href="{% url 'ventas:create' %}">Crear venta</a>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Cliente</th>
+      <th>Total</th>
+      <th>Fecha</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in object_list %}
+    <tr>
+      <td><a href="{% url 'ventas:detail' obj.pk %}">{{ obj.codigo_venta }}</a></td>
+      <td>{{ obj.cliente }}</td>
+      <td>${{ obj.total }}</td>
+      <td>{{ obj.fecha }}</td>
+      <td>
+        <!-- Botón para ver detalle -->
+        <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-sm btn-info">Ver</a>
+
+        <!-- Botón para descargar PDF -->
+        <a href="{% url 'ventas:comprobante_pdf' obj.pk %}" 
+           class="btn btn-sm btn-primary" 
+           target="_blank">
+           PDF
+        </a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No hay ventas.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

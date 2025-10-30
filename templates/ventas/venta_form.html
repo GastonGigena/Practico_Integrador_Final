@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h2>Crear Venta</h2>
+<form method="post">{% csrf_token %}
+  {{ form|crispy }}
+  <hr>
+  <h4>Items</h4>
+  {{ formset.management_form }}
+  <div id="items">
+    {% for sub in formset %}
+      <div class="card p-3 mb-2">
+        {{ sub|crispy }}
+        {% if sub.DELETE %}
+          <div class="form-group">{{ sub.DELETE }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="mt-2">
+    <button id="add-item" class="btn btn-sm btn-outline-secondary" type="button">+ Agregar item</button>
+  </div>
+  <div class="mt-3">
+    <button type="submit" class="btn btn-success">💾 Confirmar Venta</button>
+    <a href="{% url 'ventas:list' %}" class="btn btn-secondary">Cancelar</a>
+  </div>
+</form>
+
+<script>
+document.getElementById('add-item').addEventListener('click', function(){
+  const totalForms = document.querySelector('[name$="-TOTAL_FORMS"]');
+  const current = parseInt(totalForms.value);
+  const template = document.querySelectorAll('#items .card')[0].cloneNode(true);
+  template.querySelectorAll('input, select').forEach(i => { if(i.type !== 'hidden') i.value=''; });
+  template.innerHTML = template.innerHTML.replace(/-0-/g, `-${current}-`);
+  document.getElementById('items').appendChild(template);
+  totalForms.value = current + 1;
+});
+</script>
+{% endblock %}

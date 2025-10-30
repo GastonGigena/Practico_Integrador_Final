@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+
+  <div class="row">
+    <!-- Administrador -->
+    
+
+    <div class="container mt-4">
+  <h2 class="mb-4">Autenticación y Autorización para el Sistema Mr Frio</h2>
+
+  <div class="row">
+    <!-- Administrador -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-header text-white" style="background-color: #003366;">
+          Administrador
+        </div>
+        <div class="card-body">
+          <p>Acceso completo a todos los componentes:</p>
+          <ul>
+            <li>Gestionar <strong>productos</strong></li>
+            <li>Gestionar <strong>clientes</strong></li>
+            <li>Controlar y revisar <strong>ventas</strong></li>
+            <li>Acceder al <strong>dashboard</strong> de estadísticas</li>
+            <li>Acceder al <strong>panel de administración</strong> de Django</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usuario de Ventas -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-header text-white" style="background-color: #003366;">
+          Usuario de Ventas
+        </div>
+        <div class="card-body">
+          <p>Enfocado en operaciones comerciales:</p>
+          <ul>
+            <li>Registrar y consultar <strong>ventas</strong></li>
+            <li>No tiene acceso a <strong>dashboard</strong> ni <strong>stock</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usuario de Stock -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-header text-white" style="background-color: #003366;">
+          Usuario de Stock
+        </div>
+        <div class="card-body">
+          <p>Encargado del inventario:</p>
+          <ul>
+            <li>Gestionar y controlar <strong>stock de productos</strong></li>
+            <li>No tiene acceso a <strong>ventas</strong> ni <strong>dashboard</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+{% endblock %}

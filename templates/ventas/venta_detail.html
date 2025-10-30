@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Venta {{ object.codigo_venta }}</h2>
+<p>Cliente: {{ object.cliente }}</p>
+<p>Total: {{ object.total }}</p>
+<h4>Items</h4>
+<ul>
+  {% for it in object.items.all %}
+    <li>{{ it.producto }} - {{ it.cantidad }} x {{ it.precio_unitario }} = {{ it.subtotal }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

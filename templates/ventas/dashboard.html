@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard de Ventas Diarias</h2>
+
+<!-- Canvas para Ventas Diarias -->
+<canvas id="chart" height="100"></canvas>
+
+<br><br><br>
+
+<!-- Canvas para Productos Más Vendidos -->
+<h2>Productos Más Vendidos</h2>
+<canvas id="chart-productos" height="100"></canvas>
+
+<!-- Pasar datos de Django a JS de forma segura -->
+{{ fechas|json_script:"fechas-data" }}
+{{ totales|json_script:"totales-data" }}
+{{ nombres_productos|json_script:"productos-data" }}
+{{ cantidades_vendidas|json_script:"cantidades-data" }}
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Datos Ventas Diarias
+  const fechas = JSON.parse(document.getElementById('fechas-data').textContent);
+  const totales = JSON.parse(document.getElementById('totales-data').textContent);
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: fechas,
+      datasets: [{
+        label: 'Ventas diarias',
+        data: totales,
+        fill: true,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Datos Productos Más Vendidos
+  const nombresProductos = JSON.parse(document.getElementById('productos-data').textContent);
+  const cantidadesVendidas = JSON.parse(document.getElementById('cantidades-data').textContent);
+
+  const ctxProd = document.getElementById('chart-productos').getContext('2d');
+  new Chart(ctxProd, {
+    type: 'bar',
+    data: {
+      labels: nombresProductos,
+      datasets: [{
+        label: 'Cantidad vendida',
+        data: cantidadesVendidas,
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+<br><br><br>
+{% endblock %}

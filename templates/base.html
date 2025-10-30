@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema de ventas</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <!-- Logo -->
+      <img src="{% static 'img/logomisterfriogrande.png' %}" alt="Logo" width="150">
+      <!-- Texto -->
+      <span></span>
+    </a>
+    
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+    {% if user.is_authenticated %}
+        {% if "Administrador" in user_groups %}
+            <li class="nav-item mx-2"><a class="nav-link" href="/productos/">Productos</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="/clientes/">Clientes</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="/ventas/">Ventas</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="/ventas/dashboard/">Dashboard</a></li>
+        {% elif "Ventas" in user_groups %}
+            <li class="nav-item mx-2"><a class="nav-link" href="/ventas/">Ventas</a></li>
+        {% elif "Stock" in user_groups %}
+            <li class="nav-item mx-2"><a class="nav-link" href="/productos/">Productos</a></li>
+        {% endif %}
+        <li class="nav-item mx-2"><a class="nav-link" href="/admin/">Admin Panel</a></li>
+    {% endif %}
+</ul>
+
+
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><span class="nav-link">Hola, {{ user.username }}</span></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Salir</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Ingresar</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    {% if messages %}
+      {% for m in messages %}
+        <div class="alert alert-{{ m.tags }}">{{ m }}</div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
