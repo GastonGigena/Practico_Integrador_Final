@@ -2,8 +2,15 @@
 {% block content %}
 <h2>Clientes</h2>
 <a class="btn btn-primary mb-2" href="{% url 'clientes:create' %}">Crear cliente</a>
+
 <table class="table table-sm">
-  <thead><tr><th>Apellido</th><th>Nombre</th><th>DNI</th></tr></thead>
+  <thead>
+    <tr>
+      <th>Apellido</th>
+      <th>Nombre</th>
+      <th>DNI</th>
+    </tr>
+  </thead>
   <tbody>
   {% for obj in object_list %}
     <tr>
@@ -16,4 +23,23 @@
   {% endfor %}
   </tbody>
 </table>
+
+<!-- 🔹 PAGINACIÓN -->
+{% if is_paginated %}
+<div class="pagination mt-3 text-center">
+  {% if page_obj.has_previous %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+  {% endif %}
+
+  <span class="mx-2">
+    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

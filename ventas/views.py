@@ -16,7 +16,11 @@ from .models import Venta, ItemVenta, Producto
 class VentaListView(LoginRequiredMixin, ListView):
     model = Venta
     template_name = 'ventas/venta_list.html'
+    context_object_name = 'ventas'
     paginate_by = 10
+    
+    def get_queryset(self):
+        return Venta.objects.all().order_by('-fecha')
 
 
 class VentaDetailView(LoginRequiredMixin, DetailView):

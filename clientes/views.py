@@ -8,6 +8,7 @@ class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
     template_name = 'clientes/cliente_list.html'
     paginate_by = 10
+    
 
 class ClienteCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'clientes.add_cliente'

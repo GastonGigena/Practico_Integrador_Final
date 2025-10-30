@@ -2,14 +2,22 @@
 {% block content %}
 <h2>Productos</h2>
 <a class="btn btn-primary mb-2" href="{% url 'productos:create' %}">Crear producto</a>
+
 <table class="table table-sm">
-  <thead><tr><th>Nombre</th><th>SKU</th><th>Precio</th><th>Stock</th></tr></thead>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>SKU</th>
+      <th>Precio</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
   <tbody>
   {% for obj in object_list %}
     <tr>
       <td>{{ obj.nombre }}</td>
       <td>{{ obj.sku }}</td>
-      <td>{{ obj.precio }}</td>
+      <td>${{ obj.precio }}</td>
       <td>{{ obj.stock }}</td>
     </tr>
   {% empty %}
@@ -17,4 +25,23 @@
   {% endfor %}
   </tbody>
 </table>
+
+<!-- 🔹 PAGINACIÓN -->
+{% if is_paginated %}
+<div class="pagination mt-3 text-center">
+  {% if page_obj.has_previous %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+  {% endif %}
+
+  <span class="mx-2">
+    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

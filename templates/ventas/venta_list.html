@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <h2>Ventas</h2>
 <a class="btn btn-primary mb-2" href="{% url 'ventas:create' %}">Crear venta</a>
@@ -21,15 +22,8 @@
       <td>${{ obj.total }}</td>
       <td>{{ obj.fecha }}</td>
       <td>
-        <!-- Botón para ver detalle -->
         <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-sm btn-info">Ver</a>
-
-        <!-- Botón para descargar PDF -->
-        <a href="{% url 'ventas:comprobante_pdf' obj.pk %}" 
-           class="btn btn-sm btn-primary" 
-           target="_blank">
-           PDF
-        </a>
+        <a href="{% url 'ventas:comprobante_pdf' obj.pk %}" class="btn btn-sm btn-primary" target="_blank">PDF</a>
       </td>
     </tr>
   {% empty %}
@@ -37,4 +31,23 @@
   {% endfor %}
   </tbody>
 </table>
+
+<!-- 🔹 PAGINACIÓN -->
+{% if is_paginated %}
+<div class="pagination mt-3 text-center">
+  {% if page_obj.has_previous %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+  {% endif %}
+
+  <span class="mx-2">
+    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}
