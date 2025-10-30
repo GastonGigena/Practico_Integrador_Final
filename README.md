@@ -73,5 +73,6 @@ AUTOR
 ---------------------------------------------------------
 Proyecto desarrollado por: Gastón Gigena  
 Instituto Técnico Superior Córdoba  
-Materia: Práctico Integrador Final  
+Materia: Práctica Profesionalizante 1
+Profesor Luis Romano 
 Año: 2025
