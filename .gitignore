@@ -4,3 +4,18 @@ __pycache__/
 venv/
 .env
 .DS_Store
+
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+.env
+
+# VS Code
+.vscode/
+
+# Docker
+*.log
+__pycache__/
