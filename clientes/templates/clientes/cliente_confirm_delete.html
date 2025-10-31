@@ -1,0 +1,3 @@
+<h1>Confirmar eliminación</h1>
+<p>¿Eliminar {{ object.nombre }} {{ object.apellido }}?</p>
+<form method="post">{% csrf_token %}<button type="submit">Confirmar</button></form>

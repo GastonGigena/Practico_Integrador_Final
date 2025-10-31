@@ -1,0 +1,4 @@
+<h1>{{ object.nombre }} {{ object.apellido }}</h1>
+<p>DNI: {{ object.dni }}</p>
+<p>Teléfono: {{ object.telefono }}</p>
+<a href="{% url 'clientes:edit' object.pk %}">Editar</a> | <a href="{% url 'clientes:delete' object.pk %}">Eliminar</a> | <a href="{% url 'clientes:list' %}">Volver</a>
