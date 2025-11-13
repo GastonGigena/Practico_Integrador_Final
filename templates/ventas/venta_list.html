@@ -1,66 +1,103 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Ventas</h2>
-<a class="btn btn-primary mb-2" href="{% url 'ventas:create' %}">Crear venta</a>
+<h2 class="mb-4">Ventas</h2>
 
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>Código</th>
-      <th>Cliente</th>
-      <th>Total</th>
-      <th>Fecha</th>
-      <th style="width: 280px;">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for obj in object_list %}
-    <tr>
-      <td><a href="{% url 'ventas:detail' obj.pk %}">{{ obj.codigo_venta }}</a></td>
-      <td>{{ obj.cliente }}</td>
-      <td>${{ obj.total }}</td>
-      <td>{{ obj.fecha }}</td>
-      
-      <td class="d-flex text-nowrap">
-        <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-sm btn-info mx-1" title="Ver detalle">
-            Ver
-        </a>
-        
-        <a href="{% url 'ventas:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar venta">
-            Editar
-        </a>
-        
-        <a href="{% url 'ventas:comprobante_pdf' venta_id=obj.pk %}" class="btn btn-sm btn-primary mx-1" target="_blank" title="Generar PDF">
-            PDF
-        </a>
-        
-        <a href="{% url 'ventas:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar venta">
-            Eliminar
-        </a>
-      </td>
+<!-- 🔍 INICIO: Formulario de Búsqueda -->
+<div class="row mb-3 align-items-center">
+  <div class="col-md-6">
+    <form method="get" action=".">
+      <div class="input-group">
+        <input 
+          type="text" 
+          name="q" 
+          class="form-control" 
+          placeholder="Buscar por código de venta o cliente..."
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="submit">
+            <i class="fas fa-search"></i> Buscar
+          </button>
+          {% if request.GET.q %}
+            <a href="{% url 'ventas:list' %}" class="btn btn-outline-secondary">Limpiar</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-6 text-right">
+    <a class="btn btn-primary" href="{% url 'ventas:create' %}">
+      <i class="fas fa-plus"></i> Crear venta
+    </a>
+  </div>
+</div>
+<!-- 🔍 FIN: Formulario de Búsqueda -->
+
+
+<!-- 🧾 Tabla de Ventas -->
+<div class="table-responsive">
+  <table class="table table-sm table-striped table-hover align-middle">
+    <thead class="table-primary" style="background-color:#0b307b; color:white;">
+      <tr>
+        <th>Código</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Fecha</th>
+        <th class="text-center" style="width: 250px;">Acciones</th>
       </tr>
-  {% empty %}
-    <tr><td colspan="5">No hay ventas.</td></tr>
-  {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for obj in object_list %}
+      <tr>
+        <td><a href="{% url 'ventas:detail' obj.pk %}">{{ obj.codigo_venta }}</a></td>
+        <td>{{ obj.cliente }}</td>
+        <td>${{ obj.total }}</td>
+        <td>{{ obj.fecha|date:"Y-m-d H:i" }}</td>
 
+        <td class="text-center">
+          <div class="btn-group btn-group-sm" role="group">
+            <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-info" title="Ver detalle">
+              <i class="fas fa-eye"></i> Ver
+            </a>
+            <a href="{% url 'ventas:update' pk=obj.pk %}" class="btn btn-warning" title="Editar venta">
+              <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{% url 'ventas:comprobante_pdf' venta_id=obj.pk %}" class="btn btn-primary" target="_blank" title="Generar PDF">
+              <i class="fas fa-file-pdf"></i> PDF
+            </a>
+            <a href="{% url 'ventas:delete' pk=obj.pk %}" class="btn btn-danger" title="Eliminar venta">
+              <i class="fas fa-trash"></i> Eliminar
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">No hay ventas registradas.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- 🔢 Paginación -->
 {% if is_paginated %}
-<div class="pagination mt-3 text-center">
+{% with q=request.GET.q|default:'' %}
+<div class="pagination mt-4 text-center">
   {% if page_obj.has_previous %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1{% if q %}&q={{ q }}{% endif %}">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">Anterior</a>
   {% endif %}
 
-  <span class="mx-2">
-    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-  </span>
+  <span class="mx-2">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
   {% if page_obj.has_next %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}">Último &raquo;</a>
   {% endif %}
 </div>
+{% endwith %}
 {% endif %}
 {% endblock %}

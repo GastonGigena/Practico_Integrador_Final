@@ -5,6 +5,8 @@ from django.urls import reverse_lazy # <--- Importar reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Sum
+# Importación necesaria para el buscador: Q objects
+from django.db.models import Q 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -22,7 +24,23 @@ class VentaListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     
     def get_queryset(self):
-        return Venta.objects.all().order_by('-fecha')
+        # 1. Obtener el queryset base
+        queryset = super().get_queryset()
+        
+        # 2. Obtener el término de búsqueda (query) de la URL (?q=...)
+        query = self.request.GET.get('q')
+        
+        # 3. Aplicar filtro si existe el término
+        if query:
+            # Filtramos por el código de venta O por los campos del cliente relacionado (cliente__campo)
+            queryset = queryset.filter(
+                Q(codigo_venta__icontains=query) | 
+                Q(cliente__nombre__icontains=query) |
+                Q(cliente__apellido__icontains=query)
+            ).distinct()
+            
+        # 4. Asegurar el ordenamiento (aunque ya está en models.py, lo mantenemos aquí por si acaso)
+        return queryset.order_by('-fecha')
 
 
 class VentaDetailView(LoginRequiredMixin, DetailView):

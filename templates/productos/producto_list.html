@@ -1,47 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Productos</h2>
-<a class="btn btn-primary mb-2" href="{% url 'productos:create' %}">Crear producto</a>
 
-<table class="table table-sm">
+<!-- INICIO: Formulario de Búsqueda -->
+<div class="row align-items-center mb-3">
+  <div class="col-md-5">
+    <form method="get" action=".">
+      <div class="input-group">
+        <input 
+          type="text" 
+          name="q" 
+          class="form-control" 
+          placeholder="Buscar por nombre, SKU o descripción..."
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="submit">
+            <i class="fas fa-search"></i> Buscar
+          </button>
+          {% if request.GET.q %}
+            <a href="{% url 'productos:list' %}" class="btn btn-outline-secondary">Limpiar</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-7 text-right">
+    <a class="btn btn-primary" href="{% url 'productos:create' %}" style="background-color: #0b307b; border-color: #0b307b;">
+      Crear producto
+    </a>
+  </div>
+</div>
+<!-- FIN: Formulario de Búsqueda -->
+
+
+<table class="table table-sm table-hover align-middle">
   <thead>
     <tr>
       <th>Nombre</th>
       <th>SKU</th>
       <th>Precio</th>
       <th>Stock</th>
-      <th style="width: 200px;">Acciones</th> </tr>
+      <th style="width: 250px;">Acciones</th>
+    </tr>
   </thead>
   <tbody>
-  {% for obj in object_list %}
+    {% for obj in object_list %}
     <tr>
       <td>{{ obj.nombre }}</td>
       <td>{{ obj.sku }}</td>
       <td>${{ obj.precio }}</td>
       <td>{{ obj.stock }}</td>
-      
-      <td> 
-        <a href="{% url 'productos:detail' pk=obj.pk %}" class="btn btn-info btn-sm mx-1" title="Ver detalle">
+      <td class="text-nowrap">
+        <div class="btn-group" role="group">
+          <a href="{% url 'productos:detail' pk=obj.pk %}" 
+             class="btn btn-info btn-sm"
+             style="background-color: #17a2b8; border-color: #17a2b8; color: white;"
+             title="Ver detalle">
             Ver
-        </a>
-        <a href="{% url 'productos:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar">
+          </a>
+          <a href="{% url 'productos:update' pk=obj.pk %}" 
+             class="btn btn-warning btn-sm"
+             title="Editar">
             Editar
-        </a>
-        <a href="{% url 'productos:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar">
+          </a>
+          <a href="{% url 'productos:delete' pk=obj.pk %}" 
+             class="btn btn-danger btn-sm"
+             title="Eliminar">
             Eliminar
-        </a>
+          </a>
+        </div>
       </td>
-      </tr>
-  {% empty %}
-    <tr><td colspan="5">No hay productos.</td></tr> {% endfor %}
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-center">No hay productos.</td></tr>
+    {% endfor %}
   </tbody>
 </table>
 
 {% if is_paginated %}
 <div class="pagination mt-3 text-center">
   {% if page_obj.has_previous %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" 
+       href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+       style="color: #0b307b; border-color: #0b307b;">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" 
+       href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+       style="color: #0b307b; border-color: #0b307b;">Anterior</a>
   {% endif %}
 
   <span class="mx-2">
@@ -49,8 +95,12 @@
   </span>
 
   {% if page_obj.has_next %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" 
+       href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+       style="color: #0b307b; border-color: #0b307b;">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" 
+       href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+       style="color: #0b307b; border-color: #0b307b;">Último &raquo;</a>
   {% endif %}
 </div>
 {% endif %}

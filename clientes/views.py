@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import Cliente
 from .forms import ClienteForm
+# Importación necesaria para el buscador: Q objects
+from django.db.models import Q
 
 # --- VISTAS EXISTENTES (Listar y Crear) ---
 
@@ -17,6 +19,25 @@ class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
     template_name = 'clientes/cliente_list.html'
     paginate_by = 10
+    
+    # Método modificado para añadir la lógica de búsqueda
+    def get_queryset(self):
+        # 1. Obtener el queryset base (ya ordenado por -id)
+        queryset = super().get_queryset()
+        
+        # 2. Obtener el término de búsqueda (query) de la URL (?q=...)
+        query = self.request.GET.get('q')
+        
+        # 3. Aplicar filtro si existe el término
+        if query:
+            # Filtramos por nombre, apellido o DNI. El icontains es case-insensitive.
+            queryset = queryset.filter(
+                Q(nombre__icontains=query) | 
+                Q(apellido__icontains=query) |
+                Q(dni__icontains=query)
+            ).distinct()
+            
+        return queryset
     
 
 class ClienteCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):

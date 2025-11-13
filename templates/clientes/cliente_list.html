@@ -1,57 +1,98 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Clientes</h2>
-<a class="btn btn-primary mb-2" href="{% url 'clientes:create' %}">Crear cliente</a>
+<h2 class="mb-4">Clientes</h2>
 
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>Apellido</th>
-      <th>Nombre</th>
-      <th>DNI</th>
-      <th style="width: 200px;">Acciones</th> 
-    </tr>
-  </thead>
-  <tbody>
-  {% for obj in object_list %}
-    <tr>
-      <td>{{ obj.apellido }}</td>
-      <td>{{ obj.nombre }}</td>
-      <td>{{ obj.dni }}</td>
-      
-      <td> 
-        <a href="{% url 'clientes:detail' pk=obj.pk %}" class="btn btn-info btn-sm mx-1" title="Ver detalle">
-            Ver
-        </a>
-        <a href="{% url 'clientes:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar">
-            Editar
-        </a>
-        <a href="{% url 'clientes:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar">
-            Eliminar
-        </a>
-      </td>
+<!-- 🔍 INICIO: Formulario de Búsqueda -->
+<div class="row mb-3 align-items-center">
+  <div class="col-md-6">
+    <form method="get" action=".">
+      <div class="input-group">
+        <input 
+          type="text" 
+          name="q" 
+          class="form-control" 
+          placeholder="Buscar por nombre, apellido o DNI..."
+          value="{{ request.GET.q|default:'' }}"
+        >
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="submit">
+            <i class="fas fa-search"></i> Buscar
+          </button>
+          {% if request.GET.q %}
+            <a href="{% url 'clientes:list' %}" class="btn btn-outline-secondary">Limpiar</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-6 text-right">
+    <a class="btn btn-primary" href="{% url 'clientes:create' %}">
+      <i class="fas fa-user-plus"></i> Crear cliente
+    </a>
+  </div>
+</div>
+<!--FIN: Formulario de Búsqueda -->
+
+
+<!--Tabla de Clientes -->
+<div class="table-responsive">
+  <table class="table table-sm table-striped table-hover align-middle">
+    <thead class="table-primary" style="background-color:#0b307b; color:white;">
+      <tr>
+        <th>Apellido</th>
+        <th>Nombre</th>
+        <th>DNI</th>
+        <th class="text-center" style="width: 250px;">Acciones</th>
       </tr>
-  {% empty %}
-    <tr><td colspan="4">No hay clientes.</td></tr> 
-  {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for obj in object_list %}
+      <tr>
+        <td>{{ obj.apellido }}</td>
+        <td>{{ obj.nombre }}</td>
+        <td>{{ obj.dni }}</td>
 
+        <td class="text-center">
+          <div class="btn-group btn-group-sm" role="group">
+            <a href="{% url 'clientes:detail' pk=obj.pk %}" class="btn btn-info" title="Ver detalle">
+              <i class="fas fa-eye"></i> Ver
+            </a>
+            <a href="{% url 'clientes:update' pk=obj.pk %}" class="btn btn-warning" title="Editar cliente">
+              <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{% url 'clientes:delete' pk=obj.pk %}" class="btn btn-danger" title="Eliminar cliente">
+              <i class="fas fa-trash"></i> Eliminar
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center text-muted">No hay clientes registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- 🔢 Paginación -->
 {% if is_paginated %}
-<div class="pagination mt-3 text-center">
+{% with q=request.GET.q|default:'' %}
+<div class="pagination mt-4 text-center">
   {% if page_obj.has_previous %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1">&laquo; Primero</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page=1{% if q %}&q={{ q }}{% endif %}">&laquo; Primero</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">Anterior</a>
   {% endif %}
 
-  <span class="mx-2">
-    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-  </span>
+  <span class="mx-2">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
   {% if page_obj.has_next %}
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}">Siguiente</a>
+    <a class="btn btn-outline-primary btn-sm mx-1" href="?page={{ page_obj.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}">Último &raquo;</a>
   {% endif %}
 </div>
+{% endwith %}
 {% endif %}
 {% endblock %}

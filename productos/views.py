@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import Producto
 from .forms import ProductoForm
+# Importación necesaria para el buscador: Q objects
+from django.db.models import Q 
 
 # --- VISTAS EXISTENTES (Listar y Crear) ---
 
@@ -17,6 +19,25 @@ class ProductoListView(LoginRequiredMixin, ListView):
     model = Producto
     template_name = 'productos/producto_list.html'
     paginate_by = 10
+    
+    # Método modificado para añadir la lógica de búsqueda
+    def get_queryset(self):
+        # 1. Obtener el queryset base
+        queryset = super().get_queryset()
+        
+        # 2. Obtener el término de búsqueda (query) de la URL (?q=...)
+        query = self.request.GET.get('q')
+        
+        # 3. Aplicar filtro si existe el término
+        if query:
+            # Filtramos por nombre, descripción o SKU. El icontains es case-insensitive.
+            queryset = queryset.filter(
+                Q(nombre__icontains=query) | 
+                Q(descripcion__icontains=query) |
+                Q(sku__icontains=query)
+            ).distinct()
+            
+        return queryset
 
 class ProductoCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'productos.add_producto'
