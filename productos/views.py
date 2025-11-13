@@ -46,9 +46,6 @@ class ProductoCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     template_name = 'productos/producto_form.html'
     success_url = reverse_lazy('productos:list')
 
-# -------------------------------------------
-# --- VISTAS FALTANTES (Detalle, Actualizar, Eliminar) ---
-# -------------------------------------------
 
 # R: Detalle (Retrieve)
 class ProductoDetailView(LoginRequiredMixin, DetailView):
