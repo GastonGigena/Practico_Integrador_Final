@@ -19,3 +19,8 @@ from ventas.models import Venta
 admin.site.register(Producto)
 admin.site.register(Cliente)
 admin.site.register(Venta)
+
+
+admin.site.site_header = "Panel de Gestión"
+
+admin.site.index_title = "Visualizá y gestioná los módulos habilitados según tus permisos."
