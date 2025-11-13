@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="alert alert-warning">
+    <h2>Confirmar Eliminación de Venta</h2>
+    <p>
+        **¡Advertencia!** Al eliminar esta venta, el stock de los productos vendidos se **reintegrará** al inventario.
+    </p>
+    <p>¿Estás seguro de que deseas eliminar permanentemente la venta **N° {{ object.codigo_venta }}** (Total: ${{ object.total }})?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar permanentemente</button>
+        <a href="{% url 'ventas:detail' pk=object.pk %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

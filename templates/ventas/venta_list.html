@@ -11,7 +11,7 @@
       <th>Cliente</th>
       <th>Total</th>
       <th>Fecha</th>
-      <th>Acciones</th>
+      <th style="width: 280px;">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -21,18 +21,31 @@
       <td>{{ obj.cliente }}</td>
       <td>${{ obj.total }}</td>
       <td>{{ obj.fecha }}</td>
-      <td>
-        <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-sm btn-info">Ver</a>
-        <a href="{% url 'ventas:comprobante_pdf' obj.pk %}" class="btn btn-sm btn-primary" target="_blank">PDF</a>
+      
+      <td class="d-flex text-nowrap">
+        <a href="{% url 'ventas:detail' obj.pk %}" class="btn btn-sm btn-info mx-1" title="Ver detalle">
+            Ver
+        </a>
+        
+        <a href="{% url 'ventas:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar venta">
+            Editar
+        </a>
+        
+        <a href="{% url 'ventas:comprobante_pdf' venta_id=obj.pk %}" class="btn btn-sm btn-primary mx-1" target="_blank" title="Generar PDF">
+            PDF
+        </a>
+        
+        <a href="{% url 'ventas:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar venta">
+            Eliminar
+        </a>
       </td>
-    </tr>
+      </tr>
   {% empty %}
     <tr><td colspan="5">No hay ventas.</td></tr>
   {% endfor %}
   </tbody>
 </table>
 
-<!-- 🔹 PAGINACIÓN -->
 {% if is_paginated %}
 <div class="pagination mt-3 text-center">
   {% if page_obj.has_previous %}

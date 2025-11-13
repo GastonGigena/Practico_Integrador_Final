@@ -1,4 +1,17 @@
-<h1>{{ object.nombre }} {{ object.apellido }}</h1>
-<p>DNI: {{ object.dni }}</p>
-<p>Teléfono: {{ object.telefono }}</p>
-<a href="{% url 'clientes:edit' object.pk %}">Editar</a> | <a href="{% url 'clientes:delete' object.pk %}">Eliminar</a> | <a href="{% url 'clientes:list' %}">Volver</a>
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>{{ cliente.nombre }} {{ cliente.apellido }}</h1>
+    </div>
+    <div class="card-body">
+        <p><strong>DNI:</strong> {{ cliente.dni }}</p>
+        <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+        </div>
+    <div class="card-footer">
+        <a href="{% url 'clientes:update' pk=cliente.pk %}" class="btn btn-warning">Editar</a>
+        <a href="{% url 'clientes:delete' pk=cliente.pk %}" class="btn btn-danger">Eliminar</a>
+        <a href="{% url 'clientes:list' %}" class="btn btn-secondary">Volver al listado</a>
+    </div>
+</div>
+{% endblock %}

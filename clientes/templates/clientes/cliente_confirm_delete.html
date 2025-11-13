@@ -1,3 +1,13 @@
-<h1>Confirmar eliminación</h1>
-<p>¿Eliminar {{ object.nombre }} {{ object.apellido }}?</p>
-<form method="post">{% csrf_token %}<button type="submit">Confirmar</button></form>
+{% extends 'base.html' %}
+{% block content %}
+<div class="alert alert-warning">
+    <h2>Confirmar Eliminación</h2>
+    <p>¿Estás seguro de que deseas eliminar permanentemente al cliente <strong>{{ object.nombre }} {{ object.apellido }}</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'clientes:detail' pk=object.pk %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

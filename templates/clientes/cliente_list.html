@@ -9,6 +9,7 @@
       <th>Apellido</th>
       <th>Nombre</th>
       <th>DNI</th>
+      <th style="width: 200px;">Acciones</th> 
     </tr>
   </thead>
   <tbody>
@@ -17,14 +18,25 @@
       <td>{{ obj.apellido }}</td>
       <td>{{ obj.nombre }}</td>
       <td>{{ obj.dni }}</td>
-    </tr>
+      
+      <td> 
+        <a href="{% url 'clientes:detail' pk=obj.pk %}" class="btn btn-info btn-sm mx-1" title="Ver detalle">
+            Ver
+        </a>
+        <a href="{% url 'clientes:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar">
+            Editar
+        </a>
+        <a href="{% url 'clientes:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar">
+            Eliminar
+        </a>
+      </td>
+      </tr>
   {% empty %}
-    <tr><td colspan="3">No hay clientes.</td></tr>
+    <tr><td colspan="4">No hay clientes.</td></tr> 
   {% endfor %}
   </tbody>
 </table>
 
-<!-- 🔹 PAGINACIÓN -->
 {% if is_paginated %}
 <div class="pagination mt-3 text-center">
   {% if page_obj.has_previous %}

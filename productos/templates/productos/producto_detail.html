@@ -1,5 +1,20 @@
-<h1>{{ object.nombre }}</h1>
-<p>SKU: {{ object.sku }}</p>
-<p>Precio: {{ object.precio }}</p>
-<p>Stock: {{ object.stock }}</p>
-<a href="{% url 'productos:edit' object.pk %}">Editar</a> | <a href="{% url 'productos:delete' object.pk %}">Eliminar</a> | <a href="{% url 'productos:list' %}">Volver</a>
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Detalle de Producto: {{ producto.nombre|default:object.nombre }}</h1> 
+    </div>
+    <div class="card-body">
+        <p><strong>SKU:</strong> {{ producto.sku|default:object.sku }}</p>
+        <p><strong>Precio:</strong> ${{ producto.precio|default:object.precio }}</p>
+        <p><strong>Stock Actual:</strong> {{ producto.stock|default:object.stock }}</p>
+        </div>
+    <div class="card-footer d-flex gap-2">
+        <a href="{% url 'productos:update' pk=producto.pk|default:object.pk %}" class="btn btn-warning">Editar</a>
+        
+        <a href="{% url 'productos:delete' pk=producto.pk|default:object.pk %}" class="btn btn-danger">Eliminar</a>
+        
+        <a href="{% url 'productos:list' %}" class="btn btn-secondary">Volver al listado</a>
+    </div>
+</div>
+{% endblock %}

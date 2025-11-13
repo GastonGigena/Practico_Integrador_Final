@@ -10,7 +10,7 @@
       <th>SKU</th>
       <th>Precio</th>
       <th>Stock</th>
-    </tr>
+      <th style="width: 200px;">Acciones</th> </tr>
   </thead>
   <tbody>
   {% for obj in object_list %}
@@ -19,14 +19,24 @@
       <td>{{ obj.sku }}</td>
       <td>${{ obj.precio }}</td>
       <td>{{ obj.stock }}</td>
-    </tr>
+      
+      <td> 
+        <a href="{% url 'productos:detail' pk=obj.pk %}" class="btn btn-info btn-sm mx-1" title="Ver detalle">
+            Ver
+        </a>
+        <a href="{% url 'productos:update' pk=obj.pk %}" class="btn btn-warning btn-sm mx-1" title="Editar">
+            Editar
+        </a>
+        <a href="{% url 'productos:delete' pk=obj.pk %}" class="btn btn-danger btn-sm mx-1" title="Eliminar">
+            Eliminar
+        </a>
+      </td>
+      </tr>
   {% empty %}
-    <tr><td colspan="4">No hay productos.</td></tr>
-  {% endfor %}
+    <tr><td colspan="5">No hay productos.</td></tr> {% endfor %}
   </tbody>
 </table>
 
-<!-- 🔹 PAGINACIÓN -->
 {% if is_paginated %}
 <div class="pagination mt-3 text-center">
   {% if page_obj.has_previous %}
