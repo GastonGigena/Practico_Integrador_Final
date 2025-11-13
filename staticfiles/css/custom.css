@@ -1,77 +1,96 @@
 /* 🎨 Tema personalizado Mr Frío */
 
-/* Cambiar color principal de botones y enlaces */
+/* --- Variables de color institucional --- */
 :root {
   --mrfrio-azul: #0b307b;
   --mrfrio-rojo: #e01515;
 }
 
-/* 🎨 Navbar con degradado y estilo azul oscuro */
+/* === NAVBAR === */
 .navbar {
   background: linear-gradient(to right, white 15%, #002244 30%, #003366 100%);
-  /* blanco a la izquierda, azul oscuro hacia la derecha */
-  border-bottom: 3px solid #001a33; /* línea inferior sutil */
+  border-bottom: 3px solid #001a33;
 }
 
 .navbar-brand img {
   filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
 }
 
-/* Texto del navbar en blanco */
+/* Texto del navbar */
 .navbar .nav-link,
 .navbar .navbar-brand span {
   color: #ffffff !important;
   font-weight: 500;
 }
+
 .navbar-brand {
-  margin-right: 15rem; /* separa el logo del menú */
+  margin-right: 15rem;
 }
 
 /* Efecto hover */
 .navbar .nav-link:hover {
-  color: #ffcc00 !important; /* amarillo suave para contraste */
+  color: #ffcc00 !important;
 }
 
-/* Fondo del resto de la página */
+/* === CUERPO GENERAL === */
 body {
-  background-color: #f8f9fa;
+  background-color: #f9fafc;
 }
 
-/* Botones personalizados */
+/* === BOTONES === */
 .btn-primary {
-  background-color: var(--mrfrio-azul);
-  border-color: var(--mrfrio-azul);
+  background-color: var(--mrfrio-azul) !important;
+  border-color: var(--mrfrio-azul) !important;
 }
+
 .btn-primary:hover {
-  background-color: #002a80;
-  border-color: #002a80;
+  background-color: #002a80 !important;
+  border-color: #002a80 !important;
 }
 
 .btn-danger {
-  background-color: var(--mrfrio-rojo);
-  border-color: var(--mrfrio-rojo);
-}
-.btn-danger:hover {
-  background-color: #a61616;
-  border-color: #a61616;
+  background-color: var(--mrfrio-rojo) !important;
+  border-color: var(--mrfrio-rojo) !important;
 }
 
-/* Títulos y encabezados */
-h2, h3, h4, h5 {
+.btn-danger:hover {
+  background-color: #a61616 !important;
+  border-color: #a61616 !important;
+}
+
+/* === TÍTULOS === */
+h1, h2, h3, h4, h5 {
   color: var(--mrfrio-azul);
 }
 
-/* Alertas */
+/* === ALERTAS === */
 .alert-success {
   background-color: #c3e6cb;
   color: #155724;
 }
+
 .alert-danger {
   background-color: #f8d7da;
   color: #721c24;
 }
 
-/* Fondo general */
-body {
-  background-color: #f9fafc;
+/* === TARJETAS === */
+.card-header {
+  background-color: #003366 !important; 
+  color: #ffffff !important;
+  font-weight: 600;
+  border-bottom: 3px solid #001a33 !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3 {
+  color: #ffffff !important;
+  margin: 0;
+}
+
+/* Asegurar que los textos dentro de .card sean visibles y limpios */
+.card {
+  border: 1px solid #d1d9e6;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }

@@ -1,12 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Venta {{ object.codigo_venta }}</h2>
-<p>Cliente: {{ object.cliente }}</p>
-<p>Total: {{ object.total }}</p>
-<h4>Items</h4>
-<ul>
-  {% for it in object.items.all %}
-    <li>{{ it.producto }} - {{ it.cantidad }} x {{ it.precio_unitario }} = {{ it.subtotal }}</li>
-  {% endfor %}
-</ul>
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h1 class="h4 mb-0">Detalle Venta: {{ object.codigo_venta }}</h1>
+  </div>
+
+  <div class="card-body">
+    <p><strong>Cliente:</strong> {{ object.cliente }}</p>
+    <p><strong>Fecha:</strong> {{ object.fecha|date:"d/m/Y H:i" }}</p>
+    <p><strong>Total:</strong> ${{ object.total }}</p>
+
+    <h5 class="mt-4">Items</h5>
+    <ul class="list-group">
+      {% for it in object.items.all %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>{{ it.producto }} (x{{ it.cantidad }})</span>
+        <span>${{ it.subtotal }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card-footer d-flex gap-2">
+    <a href="{% url 'ventas:update' pk=object.pk %}" class="btn btn-warning">Editar</a>
+    <a href="{% url 'ventas:delete' pk=object.pk %}" class="btn btn-danger">Eliminar</a>
+    <a href="{% url 'ventas:list' %}" class="btn btn-secondary">Volver al listado</a>
+  </div>
+</div>
 {% endblock %}

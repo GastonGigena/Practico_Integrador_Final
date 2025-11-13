@@ -8,6 +8,12 @@ class Producto(models.Model):
     stock = models.PositiveIntegerField(default=0)
     sku = models.CharField(max_length=32, unique=True, editable=False)
 
+    # AÑADIR CLASE META PARA ORDENACIÓN
+    class Meta:
+        # Ordenar por el ID descendente (el último ID agregado es el más reciente)
+        # Esto asegura que los productos más nuevos aparezcan primero en las listas.
+        ordering = ['-id']
+
     def save(self, *args, **kwargs):
         if not self.sku:
             self.sku = f"SKU-{uuid.uuid4().hex[:8].upper()}"
