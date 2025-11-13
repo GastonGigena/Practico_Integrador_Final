@@ -1,19 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h1>Detalle de Producto: {{ producto.nombre|default:object.nombre }}</h1> 
+<div class="card shadow mt-4">
+    <div class="card-header bg-primary text-white">
+        <h1 class="h4 mb-0">Detalle del Producto</h1>
     </div>
+
     <div class="card-body">
-        <p><strong>SKU:</strong> {{ producto.sku|default:object.sku }}</p>
-        <p><strong>Precio:</strong> ${{ producto.precio|default:object.precio }}</p>
-        <p><strong>Stock Actual:</strong> {{ producto.stock|default:object.stock }}</p>
-        </div>
-    <div class="card-footer d-flex gap-2">
-        <a href="{% url 'productos:update' pk=producto.pk|default:object.pk %}" class="btn btn-warning">Editar</a>
-        
-        <a href="{% url 'productos:delete' pk=producto.pk|default:object.pk %}" class="btn btn-danger">Eliminar</a>
-        
+        <h4 class="card-title">{{ producto.nombre }}</h4>
+        <p class="card-text text-muted mb-3">
+            <strong>Descripción:</strong>
+            {{ producto.descripcion|default:"Sin descripción disponible." }}
+        </p>
+
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item"><strong>SKU:</strong> {{ producto.sku }}</li>
+            <li class="list-group-item"><strong>Precio:</strong> ${{ producto.precio }}</li>
+            <li class="list-group-item"><strong>Stock actual:</strong> {{ producto.stock }}</li>
+        </ul>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end gap-2">
+        <a href="{% url 'productos:update' pk=producto.pk %}" class="btn btn-warning">Editar</a>
+        <a href="{% url 'productos:delete' pk=producto.pk %}" class="btn btn-danger">Eliminar</a>
         <a href="{% url 'productos:list' %}" class="btn btn-secondary">Volver al listado</a>
     </div>
 </div>
